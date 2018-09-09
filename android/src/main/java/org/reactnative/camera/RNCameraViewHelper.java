@@ -217,11 +217,20 @@ public class RNCameraViewHelper {
 
   public static void emitBarcodesDetectedEvent(
       ViewGroup view,
-      SparseArray<Barcode> barcodes
+      SparseArray<Barcode> barcodes,
+      ImageDimensions dimensions
   ) {
+    float density = view.getResources().getDisplayMetrics().density;
+
+    double scaleX = (double) view.getWidth() / (dimensions.getWidth() * density);
+    double scaleY = (double) view.getHeight() / (dimensions.getHeight() * density);
+
     BarcodesDetectedEvent event = BarcodesDetectedEvent.obtain(
         view.getId(),
-        barcodes
+        barcodes,
+        dimensions,
+        scaleX,
+        scaleY
     );
 
     ReactContext reactContext = (ReactContext) view.getContext();

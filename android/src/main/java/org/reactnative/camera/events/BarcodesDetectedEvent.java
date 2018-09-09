@@ -2,6 +2,7 @@ package org.reactnative.camera.events;
 
 import android.support.v4.util.Pools;
 import android.util.SparseArray;
+import android.graphics.Rect;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -9,6 +10,7 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.gms.vision.barcode.Barcode;
 import org.reactnative.camera.CameraViewManager;
+import org.reactnative.camera.utils.ImageDimensions;
 import org.reactnative.barcodedetector.BarcodeFormatUtils;
 
 public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
@@ -16,29 +18,41 @@ public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
   private static final Pools.SynchronizedPool<BarcodesDetectedEvent> EVENTS_POOL =
       new Pools.SynchronizedPool<>(3);
 
+  private double mScaleX;
+  private double mScaleY;
   private SparseArray<Barcode> mBarcodes;
+  private ImageDimensions mImageDimensions;
 
   private BarcodesDetectedEvent() {
   }
 
   public static BarcodesDetectedEvent obtain(
       int viewTag,
-      SparseArray<Barcode> barcodes
+      SparseArray<Barcode> barcodes,
+      ImageDimensions dimensions,
+      double scaleX,
+      double scaleY
   ) {
     BarcodesDetectedEvent event = EVENTS_POOL.acquire();
     if (event == null) {
       event = new BarcodesDetectedEvent();
     }
-    event.init(viewTag, barcodes);
+    event.init(viewTag, barcodes, dimensions, scaleX, scaleY);
     return event;
   }
 
   private void init(
       int viewTag,
-      SparseArray<Barcode> barcodes
+      SparseArray<Barcode> barcodes,
+      ImageDimensions dimensions,
+      double scaleX,
+      double scaleY
   ) {
     super.init(viewTag);
     mBarcodes = barcodes;
+    mImageDimensions = dimensions;
+    mScaleX = scaleX;
+    mScaleY = scaleY;
   }
 
   /**
@@ -73,6 +87,20 @@ public class BarcodesDetectedEvent extends Event<BarcodesDetectedEvent> {
       WritableMap serializedBarcode = Arguments.createMap();
       serializedBarcode.putString("data", barcode.displayValue);
       serializedBarcode.putString("type", BarcodeFormatUtils.get(barcode.format));
+
+      WritableMap origin = Arguments.createMap();
+      origin.putDouble("x", barcode.getBoundingBox().left * this.mScaleX);
+      origin.putDouble("y", barcode.getBoundingBox().top * this.mScaleY);
+
+      WritableMap size = Arguments.createMap();
+      size.putDouble("width", barcode.getBoundingBox().width() * this.mScaleX);
+      size.putDouble("height", barcode.getBoundingBox().height() * this.mScaleY);
+
+      WritableMap bounds = Arguments.createMap();
+      bounds.putMap("origin", origin);
+      bounds.putMap("size", size);
+
+      serializedBarcode.putMap("bounds", bounds);
       barcodesList.pushMap(serializedBarcode);
     }
 

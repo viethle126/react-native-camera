@@ -406,8 +406,9 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
     }
 
     SparseArray<Barcode> barcodesDetected = barcodesReported == null ? new SparseArray<Barcode>() : barcodesReported;
+    ImageDimensions dimensions = new ImageDimensions(sourceWidth, sourceHeight, sourceRotation, getFacing());
 
-    RNCameraViewHelper.emitBarcodesDetectedEvent(this, barcodesDetected);
+    RNCameraViewHelper.emitBarcodesDetectedEvent(this, barcodesDetected, dimensions);
   }
 
   public void onBarcodeDetectionError(RNBarcodeDetector barcodeDetector) {
