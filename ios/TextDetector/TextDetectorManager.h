@@ -1,5 +1,7 @@
 #if __has_include(<GoogleMobileVision/GoogleMobileVision.h>)
 #import <GoogleMobileVision/GoogleMobileVision.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface TextDetectorManager : NSObject
 

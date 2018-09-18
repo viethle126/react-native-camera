@@ -28,8 +28,23 @@
   self.scaleY = scaleY;
   NSArray<GMVTextBlockFeature *> *features =
         [self.textDetector featuresInImage:image options:nil];
-   NSArray *textBlocks = [self processFeature:features];
+  NSArray *textBlocks = [self processElementsInFeatures:features];
   return textBlocks;
+}
+
+- (NSArray *)processElementsInFeatures:(NSArray *)features
+{
+  NSMutableArray *elementBlocks = [[NSMutableArray alloc] init];
+    for (GMVTextBlockFeature *textBlock in features) {
+        for (GMVTextLineFeature *textLine in textBlock.lines) {
+            for (GMVTextElementFeature *textElement in textLine.elements) {
+              NSDictionary *textElementDict = 
+              @{@"type": @"element", @"value" : textElement.value, @"bounds" : [self processBounds:textElement.bounds]};
+              [elementBlocks addObject:textElementDict];
+            }
+        }
+    }
+    return elementBlocks;
 }
 
 - (NSArray *)processFeature:(NSArray *)features

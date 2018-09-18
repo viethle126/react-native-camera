@@ -214,22 +214,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				0314E39D1B661A460092D183 /* CameraFocusSquare.m in Sources */,
-				71D5C728201B8A2A0030A15E /* RNFaceEncoder.m in Sources */,
 				454EBCF41B5082DC00AD0F86 /* NSMutableDictionary+ImageMetadata.m in Sources */,
-				71C7FFD62013C824006EB75A /* RNFileSystem.m in Sources */,
-				71D5C729201B8A2D0030A15E /* RNFaceDetectorUtils.m in Sources */,
+				4107014D1ACB732B00C6AA39 /* RCTCamera.m in Sources */,
 				4107014E1ACB732B00C6AA39 /* RCTCameraManager.m in Sources */,
+				9FE592B31CA3CBF500788287 /* RCTSensorOrientationChecker.m in Sources */,
+				7162BE672013EAA100FE51FF /* RNCamera.m in Sources */,
+				7162BE682013EAA400FE51FF /* RNCameraManager.m in Sources */,
+				71C7FFD02013C7E5006EB75A /* RNCameraUtils.m in Sources */,
 				71D5C72C201B8A360030A15E /* RNFaceDetectorManager.m in Sources */,
 				7103647B20195C53009691D1 /* RNFaceDetectorManagerStub.m in Sources */,
-				4107014D1ACB732B00C6AA39 /* RCTCamera.m in Sources */,
-				71D5C72A201B8A2F0030A15E /* RNFaceDetectorPointTransformCalculator.m in Sources */,
-				F8393BEC21469C0000AB1995 /* RNSensorOrientationChecker.m in Sources */,
-				71C7FFD02013C7E5006EB75A /* RNCameraUtils.m in Sources */,
-				7162BE682013EAA400FE51FF /* RNCameraManager.m in Sources */,
-				7162BE672013EAA100FE51FF /* RNCamera.m in Sources */,
-				9FE592B31CA3CBF500788287 /* RCTSensorOrientationChecker.m in Sources */,
-				71C7FFD32013C817006EB75A /* RNImageUtils.m in Sources */,
 				71D5C72B201B8A320030A15E /* RNFaceDetectorModule.m in Sources */,
+				71D5C72A201B8A2F0030A15E /* RNFaceDetectorPointTransformCalculator.m in Sources */,
+				71D5C729201B8A2D0030A15E /* RNFaceDetectorUtils.m in Sources */,
+				71D5C728201B8A2A0030A15E /* RNFaceEncoder.m in Sources */,
+				71C7FFD62013C824006EB75A /* RNFileSystem.m in Sources */,
+				71C7FFD32013C817006EB75A /* RNImageUtils.m in Sources */,
+				F8393BEC21469C0000AB1995 /* RNSensorOrientationChecker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
