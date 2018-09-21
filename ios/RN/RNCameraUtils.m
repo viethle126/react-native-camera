@@ -26,8 +26,6 @@
     return captureDevice;
 }
 
-# pragma mark - Enum conversion
-
 + (AVCaptureVideoOrientation)videoOrientationForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     switch (orientation) {
@@ -41,56 +39,6 @@
             return AVCaptureVideoOrientationLandscapeLeft;
         default:
             return 0;
-    }
-}
-
-+ (AVCaptureVideoOrientation)videoOrientationForDeviceOrientation:(UIDeviceOrientation)orientation
-{
-    switch (orientation) {
-        case UIDeviceOrientationPortrait:
-            return AVCaptureVideoOrientationPortrait;
-        case UIDeviceOrientationPortraitUpsideDown:
-            return AVCaptureVideoOrientationPortraitUpsideDown;
-        case UIDeviceOrientationLandscapeLeft:
-            return AVCaptureVideoOrientationLandscapeRight;
-        case UIDeviceOrientationLandscapeRight:
-            return AVCaptureVideoOrientationLandscapeLeft;
-        default:
-            return AVCaptureVideoOrientationPortrait;
-    }
-}
-
-+ (float)temperatureForWhiteBalance:(RNCameraWhiteBalance)whiteBalance
-{
-    switch (whiteBalance) {
-        case RNCameraWhiteBalanceSunny: default:
-            return 5200;
-        case RNCameraWhiteBalanceCloudy:
-            return 6000;
-        case RNCameraWhiteBalanceShadow:
-            return 7000;
-        case RNCameraWhiteBalanceIncandescent:
-            return 3000;
-        case RNCameraWhiteBalanceFluorescent:
-            return 4200;
-    }
-}
-
-+ (NSString *)captureSessionPresetForVideoResolution:(RNCameraVideoResolution)resolution
-{
-    switch (resolution) {
-        case RNCameraVideo2160p:
-            return AVCaptureSessionPreset3840x2160;
-        case RNCameraVideo1080p:
-            return AVCaptureSessionPreset1920x1080;
-        case RNCameraVideo720p:
-            return AVCaptureSessionPreset1280x720;
-        case RNCameraVideo4x3:
-            return AVCaptureSessionPreset640x480;
-        case RNCameraVideo288p:
-            return AVCaptureSessionPreset352x288;
-        default:
-            return AVCaptureSessionPresetHigh;
     }
 }
 
@@ -112,22 +60,16 @@
     }
     float bufferWidth = CVPixelBufferGetWidth(imageBuffer);
     float bufferHeight = CVPixelBufferGetHeight(imageBuffer);
-    // scale down CIImage
-    float scale = bufferHeight>bufferWidth ? 400 / bufferWidth : 400 / bufferHeight;
-    CIFilter* scaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [scaleFilter setValue:ciImage forKey:kCIInputImageKey];
-    [scaleFilter setValue:@(scale) forKey:kCIInputScaleKey];
-    [scaleFilter setValue:@(1) forKey:kCIInputAspectRatioKey];
-    ciImage = scaleFilter.outputImage;
-    // convert to UIImage and crop to preview aspect ratio
+
+    // Removed scaling to improve barcode detection
     NSDictionary *contextOptions = @{kCIContextUseSoftwareRenderer : @(false)};
     CIContext *temporaryContext = [CIContext contextWithOptions:contextOptions];
     CGImageRef videoImage;
     CGRect boundingRect;
     if (curOrientation == UIInterfaceOrientationLandscapeLeft || curOrientation == UIInterfaceOrientationLandscapeRight) {
-        boundingRect = CGRectMake(0, 0, bufferWidth*scale, bufferHeight*scale);
+        boundingRect = CGRectMake(0, 0, bufferWidth, bufferHeight);
     } else {
-        boundingRect = CGRectMake(0, 0, bufferHeight*scale, bufferWidth*scale);
+        boundingRect = CGRectMake(0, 0, bufferHeight, bufferWidth);
     }
     videoImage = [temporaryContext createCGImage:ciImage fromRect:boundingRect];
     CGRect croppedSize = AVMakeRectWithAspectRatioInsideRect(previewSize, boundingRect);
@@ -139,4 +81,3 @@
 }
 
 @end
-

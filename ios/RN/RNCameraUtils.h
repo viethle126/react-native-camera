@@ -10,17 +10,8 @@
 
 @interface RNCameraUtils : NSObject
 
-// Camera utilities
 + (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position;
-
-// Enum conversions
-+ (float)temperatureForWhiteBalance:(RNCameraWhiteBalance)whiteBalance;
-+ (NSString *)captureSessionPresetForVideoResolution:(RNCameraVideoResolution)resolution;
-+ (AVCaptureVideoOrientation)videoOrientationForDeviceOrientation:(UIDeviceOrientation)orientation;
 + (AVCaptureVideoOrientation)videoOrientationForInterfaceOrientation:(UIInterfaceOrientation)orientation;
-
-// Text detector utilities
 + (UIImage *)convertBufferToUIImage:(CMSampleBufferRef)sampleBuffer previewSize:(CGSize)previewSize;
 
 @end
-
